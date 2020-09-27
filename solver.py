@@ -104,8 +104,6 @@ class Maze:
       x,y=self.goal
       a,b=state
       d = abs(x-a)+abs(y-b)
-      print(x,y,a,b)
-      print(d)
       return d
     def get_nearest_node():
       nodes = self.frontier.all()
