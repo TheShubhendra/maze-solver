@@ -18,6 +18,7 @@
                
  **GFS** : Greedy First Search Algorithm
  
+ **KSS*  : K Star Search Algorithm
  
 ## Maze file 
   ***S*** : represents starting position
