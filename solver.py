@@ -25,6 +25,11 @@ class QueueFrontier(StackFrontier):
     node = self.frontier[0]
     self.frontier=self.frontier[1:]
     return node
+class ListFrontier(StackFrontier):
+  def remove(self,node):
+    self.frontier.remove(node)
+  def all(self):
+    return self.frontier
 class Maze:
   def __init__(self, filename):
     try:
@@ -94,12 +99,26 @@ class Maze:
       print("")
     print()
     
-    
   def solve(self, algorithm):
+    def h(state):
+      x,y=self.goal
+      a,b=state
+      d = abs(x-a)+abs(y-b)
+      print(x,y,a,b)
+      print(d)
+      return d
+    def get_nearest_node():
+      nodes = self.frontier.all()
+      distances = {node : h(node.state) for node in nodes}
+      best_node =  min(distances,key=lambda x: distances.get(x))
+      self.frontier.remove(best_node)
+      return best_node
     if algorithm=="BFS":
       self.frontier = QueueFrontier()
     elif algorithm=="DFS":
       self.frontier = StackFrontier()
+    elif algorithm=="GFS":
+      self.frontier = ListFrontier()
     else:
       raise Exception("Unknown algorithm {}. Either select BFS or DFS".format(algorithm))
     node = Node(state=self.start,parent=None, action=None)
@@ -109,7 +128,10 @@ class Maze:
     while True:
       if self.frontier.empty():
         raise Exception ("No Solution")
-      node = self.frontier.remove()
+      if algorithm in ["DFS","BFS"]:
+        node = self.frontier.remove()
+      else:
+        node = get_nearest_node()
       self.num_explored+=1 
       if node.state ==self.goal:
         actions = []
