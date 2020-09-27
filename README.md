@@ -9,6 +9,7 @@
 ## Example
   ```python maze.py examples/maze4.txt BFS``` 
 
+   ![Example](/example.png)
 
 ## Algorithms
  **BFS** : Breath First Search Algorithm
