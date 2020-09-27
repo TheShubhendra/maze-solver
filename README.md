@@ -16,6 +16,9 @@
  
  **DFS** : Depth First Search Algorithm
                
+ **GFS** : Greedy First Search Algorithm
+ 
+ 
 ## Maze file 
   ***S*** : represents starting position
   
