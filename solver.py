@@ -95,13 +95,13 @@ class Maze:
     print()
     
     
-  def solve(self, algorithm="BFS"):
+  def solve(self, algorithm):
     if algorithm=="BFS":
       self.frontier = QueueFrontier()
     elif algorithm=="DFS":
       self.frontier = StackFrontier()
     else:
-      raise Exception("Unknown algorithm {}. Either select BFS or DFS".format(alg))
+      raise Exception("Unknown algorithm {}. Either select BFS or DFS".format(algorithm))
     node = Node(state=self.start,parent=None, action=None)
     self.num_explored = 0
     self.set_explored = set()
@@ -130,11 +130,11 @@ class Maze:
       
 def main():
   maze = Maze(sys.argv[1])
-  try:
-    algorithm = sys.argv[2].upper()
-    maze.solve(algorithm=algorithm)
-  except:
-    maze.solve()
+  if len(sys.argv) == 3:
+    algorithm = sys.argv[2]
+  else:
+    algorithm = "DFS"
+  maze.solve(algorithm=algorithm)
   maze.print()
   print("Num Explored : ",maze.num_explored)
   print("Way length : ",len(maze.solution[1]))
