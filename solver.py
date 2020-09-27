@@ -2,6 +2,7 @@ import sys
 
 class Node:
   def __init__(self,state,parent,action):
+    self.distance = parent.distance+1 if parent is not None else 0
     self.state=state
     self.parent=parent
     self.action=action
@@ -104,12 +105,14 @@ class Maze:
       x,y=self.goal
       a,b=state
       d = abs(x-a)+abs(y-b)
-      print(x,y,a,b)
-      print(d)
       return d
+      
     def get_nearest_node():
       nodes = self.frontier.all()
-      distances = {node : h(node.state) for node in nodes}
+      if algorithm == "GFS":
+        distances = {node : h(node.state) for node in nodes}
+      elif algorithm == "KSS":
+        distances = {node : h(node.state)+node.distance for node in nodes}
       best_node =  min(distances,key=lambda x: distances.get(x))
       self.frontier.remove(best_node)
       return best_node
@@ -117,7 +120,7 @@ class Maze:
       self.frontier = QueueFrontier()
     elif algorithm=="DFS":
       self.frontier = StackFrontier()
-    elif algorithm=="GFS":
+    elif algorithm in ["GFS","KSS"]:
       self.frontier = ListFrontier()
     else:
       raise Exception("Unknown algorithm {}. Either select BFS or DFS".format(algorithm))
@@ -130,7 +133,7 @@ class Maze:
         raise Exception ("No Solution")
       if algorithm in ["DFS","BFS"]:
         node = self.frontier.remove()
-      else:
+      elif algorithm in ["GFS","KSS"]:
         node = get_nearest_node()
       self.num_explored+=1 
       if node.state ==self.goal:
@@ -151,6 +154,7 @@ class Maze:
           self.frontier.add(child)
       
 def main():
+  alg = {"DFS" : "Depth First Search","BFS" : "Breath First Search","GFS":"Greedy First Search","KSS":"K Star Search"}
   maze = Maze(sys.argv[1])
   if len(sys.argv) == 3:
     algorithm = sys.argv[2]
@@ -158,7 +162,8 @@ def main():
     algorithm = "DFS"
   maze.solve(algorithm=algorithm)
   maze.print()
-  print("Num Explored : ",maze.num_explored)
+  print("Path explored : ",maze.num_explored)
   print("Way length : ",len(maze.solution[1]))
+  print("Algorithm : ",alg[algorithm])
 if __name__ == '__main__':
   main()
