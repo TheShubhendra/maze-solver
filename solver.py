@@ -159,7 +159,7 @@ def main():
   if len(sys.argv) == 3:
     algorithm = sys.argv[2]
   else:
-    algorithm = "DFS"
+    algorithm = "KSS"
   maze.solve(algorithm=algorithm)
   maze.print()
   print("Path explored : ",maze.num_explored)
